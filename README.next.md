@@ -12,7 +12,7 @@ This directory contains the Next.js web application for the Monster Matchmaker.
 ├── components/            # React components
 ├── lib/                   # Utility functions and shared logic
 ├── types/                 # TypeScript type definitions
-└── src/                   # ARCANA-ENGINE core logic (existing)
+└── src/                   # Kiroween Kinship Engine core logic (existing)
 ```
 
 ## Getting Started
@@ -45,11 +45,11 @@ The application uses a neon-gothic horror aesthetic with:
 - **React 19**
 - **TypeScript**
 - **Tailwind CSS v4** (CSS-based configuration)
-- **ARCANA-ENGINE** (core classification logic in `src/`)
+- **Kiroween Kinship Engine** (core classification logic in `src/`)
 
 ## Next Steps
 
 1. Implement API route at `app/api/matchmaker/route.ts`
 2. Create quiz page components
 3. Create results page components
-4. Integrate ARCANA-ENGINE with API routes
+4. Integrate Kiroween Kinship Engine with API routes

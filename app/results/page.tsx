@@ -46,6 +46,7 @@ function ResultsContent() {
         imagePrompt={parsedData.image_generation_prompt}
         userImage={userImage}
         transformedImage={(parsedData as any).transformed_image}
+        aiShareMessage={(parsedData as any).share_message}
       />
     );
   } catch (error) {

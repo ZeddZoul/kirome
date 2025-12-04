@@ -237,3 +237,61 @@ h1, h2, h3, h4, h5, h6 {
   outline: 2px solid var(--color-neon-violet);
   outline-offset: 2px;
 }
+
+/* Print Styles for PDF Export - Single Page */
+@media print {
+  @page {
+    size: landscape;
+    margin: 0.25in;
+  }
+  
+  html, body {
+    height: 100vh !important;
+    max-height: 100vh !important;
+    overflow: hidden !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background-color: #0a0a0f !important;
+    color: white !important;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+  
+  .min-h-screen {
+    min-height: 100vh !important;
+    max-height: 100vh !important;
+    height: 100vh !important;
+    overflow: hidden !important;
+  }
+  
+  .gothic-card {
+    break-inside: avoid;
+    background: #1a1a1a !important;
+    border-color: #8E48FF !important;
+  }
+  
+  /* Ensure colors print correctly */
+  .text-neon-violet {
+    color: #8E48FF !important;
+  }
+  
+  .bg-neon-violet {
+    background-color: #8E48FF !important;
+  }
+  
+  .border-neon-violet {
+    border-color: #8E48FF !important;
+  }
+  
+  .neon-border, .neon-border-thick {
+    border-color: #8E48FF !important;
+  }
+  
+  /* Hide glow effects in print */
+  .text-glow-lg, .pulse-glow {
+    text-shadow: none !important;
+    animation: none !important;
+  }
+}
