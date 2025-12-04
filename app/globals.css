@@ -1,0 +1,239 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* Neon-Gothic Color Palette */
+  --color-neon-violet: #8E48FF;
+  --color-neon-violet-light: #A66BFF;
+  --color-neon-violet-dark: #6B2FCC;
+  --color-dark-bg: #0a0a0a;
+  --color-dark-surface: #1a1a1a;
+  --color-dark-border: #2a2a2a;
+  --color-dark-elevated: #252525;
+  --color-fog: rgba(142, 72, 255, 0.1);
+  --color-shadow: rgba(0, 0, 0, 0.8);
+  
+  /* Gothic Typography */
+  --font-gothic: 'Cinzel', 'Georgia', serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  
+  /* Spacing and Effects */
+  --glow-sm: 0 0 10px var(--color-neon-violet);
+  --glow-md: 0 0 20px var(--color-neon-violet), 0 0 40px var(--color-neon-violet);
+  --glow-lg: 0 0 30px var(--color-neon-violet), 0 0 60px var(--color-neon-violet), 0 0 90px var(--color-neon-violet);
+  --shadow-deep: 0 20px 60px var(--color-shadow);
+}
+
+body {
+  background-color: var(--color-dark-bg);
+  color: #ffffff;
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+/* Gothic Typography Utilities */
+@utility font-gothic {
+  font-family: var(--font-gothic);
+  letter-spacing: 0.05em;
+}
+
+@utility text-glow {
+  text-shadow: var(--glow-sm);
+}
+
+@utility text-glow-md {
+  text-shadow: var(--glow-md);
+}
+
+@utility text-glow-lg {
+  text-shadow: var(--glow-lg);
+}
+
+/* Neon Border and Glow Effects */
+@utility neon-border {
+  border: 1px solid var(--color-neon-violet);
+  box-shadow: var(--glow-sm);
+}
+
+@utility neon-border-thick {
+  border: 2px solid var(--color-neon-violet);
+  box-shadow: var(--glow-md);
+}
+
+@utility neon-glow {
+  box-shadow: var(--glow-md);
+}
+
+@utility neon-glow-lg {
+  box-shadow: var(--glow-lg);
+}
+
+/* Atmospheric Fog Effect */
+@keyframes fog-drift {
+  0%, 100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translateY(-10px);
+  }
+}
+
+.fog-overlay {
+  position: relative;
+}
+
+.fog-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, var(--color-fog) 0%, transparent 70%);
+  pointer-events: none;
+  animation: fog-drift 8s ease-in-out infinite;
+}
+
+/* Smooth Transitions */
+@utility transition-glow {
+  transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+}
+
+@utility transition-all-smooth {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hover Effects */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--glow-md), var(--shadow-deep);
+}
+
+/* Gothic Card Styling */
+.gothic-card {
+  background: linear-gradient(135deg, var(--color-dark-surface) 0%, var(--color-dark-bg) 100%);
+  border: 1px solid var(--color-dark-border);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.gothic-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-neon-violet), transparent);
+  opacity: 0.5;
+}
+
+/* Animated Background Gradient */
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@utility animated-gradient {
+  background: linear-gradient(
+    -45deg,
+    var(--color-dark-bg),
+    var(--color-dark-surface),
+    var(--color-dark-bg),
+    rgba(142, 72, 255, 0.1)
+  );
+  background-size: 400% 400%;
+  animation: gradient-shift 15s ease infinite;
+}
+
+/* Pulsing Glow Animation */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px var(--color-neon-violet), 0 0 40px var(--color-neon-violet);
+  }
+  50% {
+    box-shadow: 0 0 30px var(--color-neon-violet), 0 0 60px var(--color-neon-violet), 0 0 90px var(--color-neon-violet);
+  }
+}
+
+@utility pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* Shimmer Animation for Loading States */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@utility animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Responsive Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-gothic);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Selection Styling */
+::selection {
+  background-color: var(--color-neon-violet);
+  color: white;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-dark-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-dark-border);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-neon-violet);
+}
+
+/* Focus Styles */
+*:focus-visible {
+  outline: 2px solid var(--color-neon-violet);
+  outline-offset: 2px;
+}
