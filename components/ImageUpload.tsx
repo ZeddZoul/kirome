@@ -95,7 +95,7 @@ export default function ImageUpload({ onImageSelect, currentImage, isOptional = 
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
           className={`
-            border-2 border-dashed rounded-lg p-10 text-center cursor-pointer
+            border-2 border-dashed rounded-lg p-4 sm:p-10 text-center cursor-pointer
             transition-all-smooth relative overflow-hidden
             ${isDragging 
               ? 'border-neon-violet bg-neon-violet/20 neon-glow' 
@@ -104,10 +104,10 @@ export default function ImageUpload({ onImageSelect, currentImage, isOptional = 
           `}
           data-testid="drop-zone"
         >
-          <div className="flex flex-col items-center gap-4 relative z-10">
+          <div className="flex flex-col items-center gap-2 sm:gap-4 relative z-10">
             <div className={`transition-all-smooth ${isDragging ? 'scale-110 text-neon-violet' : 'text-gray-400'}`}>
               <svg
-                className="w-20 h-20"
+                className="w-10 h-10 sm:w-20 sm:h-20"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -121,11 +121,11 @@ export default function ImageUpload({ onImageSelect, currentImage, isOptional = 
               </svg>
             </div>
             <div>
-              <p className="text-lg text-gray-300 mb-2 font-medium">
-                {isDragging ? 'Drop your photo here' : 'Drop your photo here or click to upload'}
+              <p className="text-sm sm:text-lg text-gray-300 mb-1 sm:mb-2 font-medium">
+                {isDragging ? 'Drop your photo here' : 'Tap to upload photo'}
               </p>
-              <p className="text-sm text-gray-500 font-light">
-                Supports JPG, PNG, and WebP
+              <p className="text-xs sm:text-sm text-gray-500 font-light">
+                JPG, PNG, WebP
               </p>
             </div>
           </div>
@@ -138,7 +138,7 @@ export default function ImageUpload({ onImageSelect, currentImage, isOptional = 
           <img
             src={preview}
             alt="Preview"
-            className="w-full h-64 object-cover rounded-lg transition-all-smooth group-hover:scale-105"
+            className="w-full h-40 sm:h-64 object-cover rounded-lg transition-all-smooth group-hover:scale-105"
             data-testid="preview-image"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all-smooth" />
