@@ -156,7 +156,7 @@
 
 - [x] 14. Create API route for monster matchmaker
   - Implement POST /api/matchmaker endpoint
-  - Integrate ARCANA-ENGINE pipeline into API handler
+  - Integrate Kiroween Kinship Engine pipeline into API handler
   - Handle request validation and error responses
   - Return JSON response with proper status codes and CORS headers
   - _Requirements: 11.1, 11.2, 11.3, 11.4, 11.5_

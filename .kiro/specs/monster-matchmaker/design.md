@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Monster Matchmaker is a Next.js web application that combines a personality-to-archetype classification engine with an interactive user interface. The system maps user attributes to monster personas through weighted trait analysis using a functional pipeline pattern. The architecture separates concerns between the frontend (React components for quiz and results), the backend (Next.js API routes), and the core logic (ARCANA-ENGINE classification pipeline). Users interact with a neon-gothic horror themed interface to answer personality questions, upload photos, and receive their monster assignment with a personalized transformation image prompt.
+The Monster Matchmaker is a Next.js web application that combines a personality-to-archetype classification engine with an interactive user interface. The system maps user attributes to monster personas through weighted trait analysis using a functional pipeline pattern. The architecture separates concerns between the frontend (React components for quiz and results), the backend (Next.js API routes), and the core logic (Kiroween Kinship Engine classification pipeline). Users interact with a neon-gothic horror themed interface to answer personality questions, upload photos, and receive their monster assignment with a personalized transformation image prompt.
 
 ## Architecture
 
@@ -18,12 +18,12 @@ Quiz Page → Results Page
 
 ### API Layer (Next.js API Routes)
 ```
-POST /api/matchmaker → ARCANA-ENGINE Pipeline → JSON Response
+POST /api/matchmaker → Kiroween Kinship Engine Pipeline → JSON Response
 ```
 
 **API Route**: Receives quiz submissions, invokes classification logic, returns results
 
-### Core Logic Layer (ARCANA-ENGINE)
+### Core Logic Layer (Kiroween Kinship Engine)
 ```
 Input Layer → Validation Layer → Scoring Layer → Correlation Layer → Output Layer
 ```
@@ -133,7 +133,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<MatchmakerResponse | ErrorResponse>
 ) {
-  // Validates request, invokes ARCANA-ENGINE, returns results
+  // Validates request, invokes Kiroween Kinship Engine, returns results
 }
 ```
 

@@ -37,6 +37,7 @@ interface AssignmentResult {
 interface OutputData {
   assignment_result: AssignmentResult;
   image_generation_prompt: string;
+  share_message: string;
   transformed_image?: string;
 }
 
@@ -100,7 +101,7 @@ export async function POST(request: NextRequest) {
     const ai = new GoogleGenAI({ apiKey });
 
     // STEP 1: Use gemini-2.5-flash for persona assignment (text only)
-    const personaPrompt = `You are the ARCANA-ENGINE v7.2, a monster personality matchmaker. Based on the user's personality attributes, assign them to ONE of these 15 monster personas:
+    const personaPrompt = `You are Kiroween Kinship v7.2, a monster personality matchmaker. Based on the user's personality attributes, assign them to ONE of these 15 monster personas:
 
 1. Vampire: aristocratic, immortal, nocturnal, sophisticated, ancient
 2. Werewolf: primal rage, chaotic, transformative, passionate, wild
@@ -118,7 +119,7 @@ export async function POST(request: NextRequest) {
 14. Alien Parasite: infiltrating, subtle, control, hidden, symbiotic
 15. Gorgon: stone gaze, transformative, deadly, beautiful, serpentine
 
-You can add more if the user's personality traits do not FULLY match any of the ones here and YOU ASCERTAIN there is a BETTER fit
+You SHOULD pick the persona outside this list if the user's personality traits do not FULLY match any of the ones here or YOU ASCERTAIN there is a BETTER fit for the User's PERSONALITY ATTRIBUTES.
 
 User's Personality Attributes:
 - Time of Day: ${body.timeOfDay}
@@ -134,7 +135,8 @@ Return ONLY a JSON object in this exact format (do NOT use markdown code fences 
     "rationale": "[2-3 humorous sentences explaining why, max 50 words, must reference conflict style and ambition]",
     "core_trait_summary": "[exactly 5 traits from the list above (or what you inferred), comma-separated]"
   },
-  "image_generation_prompt": "Transform this person into a [Monster Name] with NEON-GOTHIC HORROR style, electric violet (#8E48FF) lighting, foggy city street background, photorealistic, 8k, cinematic"
+  "image_generation_prompt": "Transform this person into a [Monster Name] with NEON-GOTHIC HORROR style, electric violet (#8E48FF) lighting, foggy city street background, photorealistic, 8k, cinematic",
+  "share_message": "[A fun social media message (2-3 sentences with emojis) announcing their monster persona and encouraging others to try the quiz. Max 200 characters.]"
 }`;
 
     const response = await ai.models.generateContent({
@@ -177,7 +179,24 @@ Return ONLY a JSON object in this exact format (do NOT use markdown code fences 
           // Build prompt with text and image (text-and-image-to-image)
           const imagePrompt = [
             { 
-              text: `Transform this person into a ${outputData.assignment_result.assigned_persona}. ${outputData.image_generation_prompt}. Keep the person's face recognizable but add monster features, dramatic lighting, and horror atmosphere.` 
+              text: `Transform this person into a ${outputData.assignment_result.assigned_persona}. 
+
+CRITICAL REQUIREMENTS:
+- PRESERVE the person's exact facial features, face shape, skin tone, and body proportions - the result must clearly RESEMBLE the original person
+- Keep their eyes, nose, mouth, and facial structure identical
+- Maintain their body type and posture
+- You MAY freely change: clothing, accessories, limbs/hands appearance, hair style/color, background, and add monster-specific features
+
+OTHER CRITICAL ENHANCEMENTS: 
+- DETECT AND REMOVE ALL UI ELEMENTS AND ARTIFACTS
+- DETECT AND REMOVE any play buttons, video controls, or media player UI overlays
+- DETECT AND REMOVE any watermarks, logos, timestamps, or text overlays
+- DETECT AND REMOVE any screenshot artifacts, borders, or interface elements
+- The final image should be a CLEAN portrait with NO UI elements whatsoever
+
+STYLE: Hyper-realistic, photorealistic quality, 8K resolution, cinematic lighting with electric violet (#8E48FF) neon accents, foggy atmospheric background, dramatic shadows
+
+MONSTER TRANSFORMATION: Add ${outputData.assignment_result.assigned_persona}-specific features (fangs, claws, glowing eyes, supernatural elements) while keeping the person's identity clearly recognizable. The viewer should immediately see this is the SAME PERSON transformed into a monster.` 
             },
             {
               inlineData: {
@@ -196,17 +215,30 @@ Return ONLY a JSON object in this exact format (do NOT use markdown code fences 
             },
           });
           console.log('Image transformation response received');
+          console.log('Image response candidates:', JSON.stringify(imageResponse.candidates?.length));
+          console.log('Image response parts:', JSON.stringify(imageResponse.candidates?.[0]?.content?.parts?.map(p => ({ hasInlineData: !!p.inlineData, hasText: !!p.text }))));
 
           // Look for the generated image part
-          const imagePart = imageResponse.candidates?.[0]?.content?.parts.find(
-            (part: any) => part.inlineData
-          );
-
-          if (imagePart) {
-            const generatedImageData = imagePart.inlineData.data;
-            // Default to 'image/png' if mimeType is somehow missing, though it shouldn't be
-            const imageMimeType = imagePart.inlineData.mimeType || 'image/png';
-            outputData.transformed_image = `data:${imageMimeType};base64,${generatedImageData}`;
+          const parts = imageResponse.candidates?.[0]?.content?.parts;
+          if (parts) {
+            console.log('Found parts:', parts.length);
+            const imagePart = parts.find((part) => part.inlineData);
+            if (imagePart?.inlineData) {
+              console.log('Found image data, mimeType:', imagePart.inlineData.mimeType);
+              const generatedImageData = imagePart.inlineData.data;
+              // Default to 'image/png' if mimeType is somehow missing
+              const imageMimeType = imagePart.inlineData.mimeType || 'image/png';
+              outputData.transformed_image = `data:${imageMimeType};base64,${generatedImageData}`;
+              console.log('Image added to output, length:', outputData.transformed_image?.length);
+            } else {
+              console.log('No inlineData found in parts');
+              // Log what we got instead
+              parts.forEach((p, i) => {
+                if (p.text) console.log(`Part ${i} text:`, p.text.substring(0, 200));
+              });
+            }
+          } else {
+            console.log('No parts found in response');
           }
           
         }

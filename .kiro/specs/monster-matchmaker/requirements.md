@@ -6,7 +6,7 @@ The Kiroween Kinship: Ultimate Monster Matchmaker is an interactive Next.js web 
 
 ## Glossary
 
-- **ARCANA-ENGINE**: The core classification system that processes user attributes and assigns monster personas
+- **Kiroween Kinship Engine**: The core classification system that processes user attributes and assigns monster personas
 - **Monster Catalog**: A predefined collection of fifteen monster archetypes with associated trait summaries
 - **Trait Weighting**: A scoring mechanism where certain attributes (Conflict and Ambition) receive double importance in the classification algorithm
 - **Assignment Logic**: The algorithmic process that correlates user attributes to monster personas using creative archetype matching
@@ -25,11 +25,11 @@ The Kiroween Kinship: Ultimate Monster Matchmaker is an interactive Next.js web 
 
 #### Acceptance Criteria
 
-1. WHEN a user submits input data THEN the ARCANA-ENGINE SHALL validate that exactly five attributes are provided
-2. WHEN the ARCANA-ENGINE receives the five attributes THEN the system SHALL categorize them as Time of Day, Weather, Conflict Style, Snack Flavor, and Ambition
-3. WHEN processing attributes THEN the ARCANA-ENGINE SHALL apply normal weighting to Time of Day, Weather, and Snack Flavor attributes
-4. WHEN processing attributes THEN the ARCANA-ENGINE SHALL apply double weighting to Conflict Style and Ambition attributes
-5. WHEN any attribute is missing or invalid THEN the ARCANA-ENGINE SHALL reject the input and signal an error
+1. WHEN a user submits input data THEN the Kiroween Kinship Engine SHALL validate that exactly five attributes are provided
+2. WHEN the Kiroween Kinship Engine receives the five attributes THEN the system SHALL categorize them as Time of Day, Weather, Conflict Style, Snack Flavor, and Ambition
+3. WHEN processing attributes THEN the Kiroween Kinship Engine SHALL apply normal weighting to Time of Day, Weather, and Snack Flavor attributes
+4. WHEN processing attributes THEN the Kiroween Kinship Engine SHALL apply double weighting to Conflict Style and Ambition attributes
+5. WHEN any attribute is missing or invalid THEN the Kiroween Kinship Engine SHALL reject the input and signal an error
 
 ### Requirement 2
 
@@ -37,11 +37,11 @@ The Kiroween Kinship: Ultimate Monster Matchmaker is an interactive Next.js web 
 
 #### Acceptance Criteria
 
-1. WHEN the ARCANA-ENGINE processes weighted attributes THEN the system SHALL evaluate all fifteen monster personas from the Monster Catalog
-2. WHEN evaluating personas THEN the ARCANA-ENGINE SHALL use creative archetype correlation to determine conceptual adjacency between user traits and monster characteristics
-3. WHEN multiple monsters have similar correlation scores THEN the ARCANA-ENGINE SHALL select the single most conceptually adjacent monster
-4. WHEN a monster is selected THEN the ARCANA-ENGINE SHALL retrieve the corresponding five-word core trait summary from the Monster Catalog
-5. WHEN the assignment is complete THEN the ARCANA-ENGINE SHALL generate a humorous justification that links the user's double-weighted traits to the chosen persona
+1. WHEN the Kiroween Kinship Engine processes weighted attributes THEN the system SHALL evaluate all fifteen monster personas from the Monster Catalog
+2. WHEN evaluating personas THEN the Kiroween Kinship Engine SHALL use creative archetype correlation to determine conceptual adjacency between user traits and monster characteristics
+3. WHEN multiple monsters have similar correlation scores THEN the Kiroween Kinship Engine SHALL select the single most conceptually adjacent monster
+4. WHEN a monster is selected THEN the Kiroween Kinship Engine SHALL retrieve the corresponding five-word core trait summary from the Monster Catalog
+5. WHEN the assignment is complete THEN the Kiroween Kinship Engine SHALL generate a humorous justification that links the user's double-weighted traits to the chosen persona
 
 ### Requirement 3
 
@@ -49,11 +49,11 @@ The Kiroween Kinship: Ultimate Monster Matchmaker is an interactive Next.js web 
 
 #### Acceptance Criteria
 
-1. WHEN the ARCANA-ENGINE completes the assignment THEN the system SHALL output a single minified JSON object
-2. WHEN generating the JSON output THEN the ARCANA-ENGINE SHALL include an assignment_result object containing assigned_persona, rationale, and core_trait_summary fields
-3. WHEN generating the rationale THEN the ARCANA-ENGINE SHALL limit the text to a maximum of fifty words across two to three sentences
-4. WHEN generating the JSON output THEN the ARCANA-ENGINE SHALL include an image_generation_prompt field with a complete transformation description
-5. WHEN outputting the JSON THEN the ARCANA-ENGINE SHALL produce no additional text, explanations, or formatting before or after the JSON object
+1. WHEN the Kiroween Kinship Engine completes the assignment THEN the system SHALL output a single minified JSON object
+2. WHEN generating the JSON output THEN the Kiroween Kinship Engine SHALL include an assignment_result object containing assigned_persona, rationale, and core_trait_summary fields
+3. WHEN generating the rationale THEN the Kiroween Kinship Engine SHALL limit the text to a maximum of fifty words across two to three sentences
+4. WHEN generating the JSON output THEN the Kiroween Kinship Engine SHALL include an image_generation_prompt field with a complete transformation description
+5. WHEN outputting the JSON THEN the Kiroween Kinship Engine SHALL produce no additional text, explanations, or formatting before or after the JSON object
 
 ### Requirement 4
 
@@ -61,11 +61,11 @@ The Kiroween Kinship: Ultimate Monster Matchmaker is an interactive Next.js web 
 
 #### Acceptance Criteria
 
-1. WHEN generating the image prompt THEN the ARCANA-ENGINE SHALL reference the user's uploaded source image as the visual basis
-2. WHEN constructing the image prompt THEN the ARCANA-ENGINE SHALL specify a neon-gothic horror aesthetic style
-3. WHEN constructing the image prompt THEN the ARCANA-ENGINE SHALL include lighting specifications with electric violet color code #8E48FF
-4. WHEN constructing the image prompt THEN the ARCANA-ENGINE SHALL specify a foggy city street background setting
-5. WHEN constructing the image prompt THEN the ARCANA-ENGINE SHALL include technical quality descriptors such as photorealistic, 8k resolution, and cinematic volumetric lighting
+1. WHEN generating the image prompt THEN the Kiroween Kinship Engine SHALL reference the user's uploaded source image as the visual basis
+2. WHEN constructing the image prompt THEN the Kiroween Kinship Engine SHALL specify a neon-gothic horror aesthetic style
+3. WHEN constructing the image prompt THEN the Kiroween Kinship Engine SHALL include lighting specifications with electric violet color code #8E48FF
+4. WHEN constructing the image prompt THEN the Kiroween Kinship Engine SHALL specify a foggy city street background setting
+5. WHEN constructing the image prompt THEN the Kiroween Kinship Engine SHALL include technical quality descriptors such as photorealistic, 8k resolution, and cinematic volumetric lighting
 
 ### Requirement 5
 
@@ -73,7 +73,7 @@ The Kiroween Kinship: Ultimate Monster Matchmaker is an interactive Next.js web 
 
 #### Acceptance Criteria
 
-1. WHEN the ARCANA-ENGINE initializes THEN the system SHALL load a Monster Catalog containing exactly fifteen monster personas
+1. WHEN the Kiroween Kinship Engine initializes THEN the system SHALL load a Monster Catalog containing exactly fifteen monster personas
 2. WHEN storing monster data THEN the system SHALL associate each persona with a five-word maximum core trait summary
 3. WHEN the Monster Catalog is queried THEN the system SHALL return personas including Vampire, Werewolf, Cthulhu, Frankenstein's Monster, Mummy, Zombie, Banshee, Witch, Headless Horseman, Cryptid, Grim Reaper, Poltergeist, Demogorgon, Alien Parasite, and Gorgon
 4. WHEN a persona is retrieved THEN the system SHALL provide its complete trait summary without modification
@@ -85,11 +85,11 @@ The Kiroween Kinship: Ultimate Monster Matchmaker is an interactive Next.js web 
 
 #### Acceptance Criteria
 
-1. WHEN the ARCANA-ENGINE receives input THEN the system SHALL execute input validation before trait weighting
-2. WHEN input validation passes THEN the ARCANA-ENGINE SHALL execute trait weighting before archetype correlation
-3. WHEN trait weighting completes THEN the ARCANA-ENGINE SHALL execute archetype correlation before assignment finalization
-4. WHEN archetype correlation completes THEN the ARCANA-ENGINE SHALL execute assignment finalization before JSON generation
-5. WHEN any step fails THEN the ARCANA-ENGINE SHALL halt processing and signal an error without proceeding to subsequent steps
+1. WHEN the Kiroween Kinship Engine receives input THEN the system SHALL execute input validation before trait weighting
+2. WHEN input validation passes THEN the Kiroween Kinship Engine SHALL execute trait weighting before archetype correlation
+3. WHEN trait weighting completes THEN the Kiroween Kinship Engine SHALL execute archetype correlation before assignment finalization
+4. WHEN archetype correlation completes THEN the Kiroween Kinship Engine SHALL execute assignment finalization before JSON generation
+5. WHEN any step fails THEN the Kiroween Kinship Engine SHALL halt processing and signal an error without proceeding to subsequent steps
 
 ### Requirement 7
 
@@ -97,11 +97,11 @@ The Kiroween Kinship: Ultimate Monster Matchmaker is an interactive Next.js web 
 
 #### Acceptance Criteria
 
-1. WHEN generating the rationale THEN the ARCANA-ENGINE SHALL prioritize references to the double-weighted traits of Conflict Style and Ambition
-2. WHEN constructing the justification THEN the ARCANA-ENGINE SHALL extend beyond literal interpretation of the input facts
-3. WHEN writing the rationale THEN the ARCANA-ENGINE SHALL employ humor and creative language
-4. WHEN the rationale is complete THEN the ARCANA-ENGINE SHALL ensure it conceptually links the user's attributes to the monster's core traits
-5. WHEN validating the rationale THEN the ARCANA-ENGINE SHALL confirm the text does not exceed fifty words
+1. WHEN generating the rationale THEN the Kiroween Kinship Engine SHALL prioritize references to the double-weighted traits of Conflict Style and Ambition
+2. WHEN constructing the justification THEN the Kiroween Kinship Engine SHALL extend beyond literal interpretation of the input facts
+3. WHEN writing the rationale THEN the Kiroween Kinship Engine SHALL employ humor and creative language
+4. WHEN the rationale is complete THEN the Kiroween Kinship Engine SHALL ensure it conceptually links the user's attributes to the monster's core traits
+5. WHEN validating the rationale THEN the Kiroween Kinship Engine SHALL confirm the text does not exceed fifty words
 
 ### Requirement 8
 
@@ -148,12 +148,12 @@ The Kiroween Kinship: Ultimate Monster Matchmaker is an interactive Next.js web 
 
 ### Requirement 11
 
-**User Story:** As a developer, I want a Next.js API route that processes quiz submissions, so that the frontend can communicate with the ARCANA-ENGINE backend logic.
+**User Story:** As a developer, I want a Next.js API route that processes quiz submissions, so that the frontend can communicate with the Kiroween Kinship Engine backend logic.
 
 #### Acceptance Criteria
 
 1. WHEN the Quiz Interface submits data THEN the API Route SHALL receive the five user attributes as a POST request
-2. WHEN the API Route receives a request THEN the system SHALL invoke the ARCANA-ENGINE processing pipeline
+2. WHEN the API Route receives a request THEN the system SHALL invoke the Kiroween Kinship Engine processing pipeline
 3. WHEN the processing pipeline completes successfully THEN the API Route SHALL return the JSON response with status code 200
 4. WHEN the processing pipeline encounters an error THEN the API Route SHALL return an appropriate error response with status code 400 or 500
 5. WHEN the API Route returns a response THEN the system SHALL include proper CORS headers for client-side access

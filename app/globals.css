@@ -2,16 +2,18 @@
 @import "tailwindcss";
 
 @theme {
-  /* Neon-Gothic Color Palette */
+  /* Neon-Gothic Color Palette - Darker & More Haunting */
   --color-neon-violet: #8E48FF;
   --color-neon-violet-light: #A66BFF;
   --color-neon-violet-dark: #6B2FCC;
-  --color-dark-bg: #0a0a0a;
-  --color-dark-surface: #1a1a1a;
-  --color-dark-border: #2a2a2a;
-  --color-dark-elevated: #252525;
-  --color-fog: rgba(142, 72, 255, 0.1);
-  --color-shadow: rgba(0, 0, 0, 0.8);
+  --color-blood-red: #8B0000;
+  --color-dark-bg: #050505;
+  --color-dark-surface: #0d0d0d;
+  --color-dark-border: #1a1a1a;
+  --color-dark-elevated: #151515;
+  --color-fog: rgba(142, 72, 255, 0.08);
+  --color-shadow: rgba(0, 0, 0, 0.95);
+  --color-creepy-green: #1a3a1a;
   
   /* Gothic Typography */
   --font-gothic: 'Cinzel', 'Georgia', serif;
@@ -22,15 +24,51 @@
   --glow-md: 0 0 20px var(--color-neon-violet), 0 0 40px var(--color-neon-violet);
   --glow-lg: 0 0 30px var(--color-neon-violet), 0 0 60px var(--color-neon-violet), 0 0 90px var(--color-neon-violet);
   --shadow-deep: 0 20px 60px var(--color-shadow);
+  --shadow-haunting: 0 0 100px rgba(142, 72, 255, 0.15), 0 0 200px rgba(0, 0, 0, 0.8);
 }
 
 body {
   background-color: var(--color-dark-bg);
-  color: #ffffff;
+  color: #e0e0e0;
   font-family: var(--font-body);
   font-weight: 400;
   line-height: 1.6;
+  min-height: 100vh;
 }
+
+/* Creepy animated background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse at 20% 80%, rgba(142, 72, 255, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(139, 0, 0, 0.02) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0.5) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: -1;
+  animation: haunting-bg 20s ease-in-out infinite;
+}
+
+@keyframes haunting-bg {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Flickering effect for creepy ambiance */
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  41% { opacity: 1; }
+  42% { opacity: 0.8; }
+  43% { opacity: 1; }
+  45% { opacity: 0.3; }
+  46% { opacity: 1; }
+}
+
+.flicker {
+  animation: flicker 4s infinite;
+}
+
 
 /* Gothic Typography Utilities */
 @utility font-gothic {
@@ -47,18 +85,18 @@ body {
 }
 
 @utility text-glow-lg {
-  text-shadow: var(--glow-lg);
+  text-shadow: var(--glow-lg), 0 0 120px rgba(142, 72, 255, 0.5);
 }
 
 /* Neon Border and Glow Effects */
 @utility neon-border {
   border: 1px solid var(--color-neon-violet);
-  box-shadow: var(--glow-sm);
+  box-shadow: var(--glow-sm), inset 0 0 20px rgba(142, 72, 255, 0.05);
 }
 
 @utility neon-border-thick {
   border: 2px solid var(--color-neon-violet);
-  box-shadow: var(--glow-md);
+  box-shadow: var(--glow-md), inset 0 0 30px rgba(142, 72, 255, 0.08);
 }
 
 @utility neon-glow {
@@ -69,16 +107,22 @@ body {
   box-shadow: var(--glow-lg);
 }
 
-/* Atmospheric Fog Effect */
+/* Creepy Fog Effect */
 @keyframes fog-drift {
   0%, 100% {
-    opacity: 0.3;
-    transform: translateY(0);
+    opacity: 0.2;
+    transform: translateY(0) scale(1);
   }
   50% {
-    opacity: 0.6;
-    transform: translateY(-10px);
+    opacity: 0.5;
+    transform: translateY(-20px) scale(1.1);
   }
+}
+
+@keyframes fog-creep {
+  0% { transform: translateX(-100%) translateY(0); opacity: 0; }
+  50% { opacity: 0.3; }
+  100% { transform: translateX(100%) translateY(-50px); opacity: 0; }
 }
 
 .fog-overlay {
@@ -91,7 +135,7 @@ body {
   inset: 0;
   background: radial-gradient(circle at 50% 50%, var(--color-fog) 0%, transparent 70%);
   pointer-events: none;
-  animation: fog-drift 8s ease-in-out infinite;
+  animation: fog-drift 12s ease-in-out infinite;
 }
 
 /* Smooth Transitions */
@@ -103,25 +147,26 @@ body {
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Hover Effects */
+/* Hover Effects - More Dramatic */
 .hover-lift {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .hover-lift:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--glow-md), var(--shadow-deep);
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: var(--glow-md), var(--shadow-deep), 0 0 60px rgba(142, 72, 255, 0.2);
 }
 
-/* Gothic Card Styling */
+/* Gothic Card Styling - Darker & More Ominous */
 .gothic-card {
-  background: linear-gradient(135deg, var(--color-dark-surface) 0%, var(--color-dark-bg) 100%);
-  border: 1px solid var(--color-dark-border);
+  background: linear-gradient(145deg, rgba(13, 13, 13, 0.95) 0%, rgba(5, 5, 5, 0.98) 100%);
+  border: 1px solid rgba(142, 72, 255, 0.2);
   border-radius: 0.75rem;
   padding: 1.5rem;
   backdrop-filter: blur(10px);
   position: relative;
   overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(142, 72, 255, 0.1);
 }
 
 .gothic-card::before {
@@ -131,11 +176,23 @@ body {
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--color-neon-violet), transparent);
-  opacity: 0.5;
+  background: linear-gradient(90deg, transparent, rgba(142, 72, 255, 0.5), transparent);
+  opacity: 0.7;
 }
 
-/* Animated Background Gradient */
+.gothic-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.3), transparent);
+  pointer-events: none;
+}
+
+
+/* Animated Background Gradient - Slower, More Ominous */
 @keyframes gradient-shift {
   0%, 100% {
     background-position: 0% 50%;
@@ -151,24 +208,36 @@ body {
     var(--color-dark-bg),
     var(--color-dark-surface),
     var(--color-dark-bg),
-    rgba(142, 72, 255, 0.1)
+    rgba(142, 72, 255, 0.05)
   );
   background-size: 400% 400%;
-  animation: gradient-shift 15s ease infinite;
+  animation: gradient-shift 25s ease infinite;
 }
 
-/* Pulsing Glow Animation */
+/* Pulsing Glow Animation - Slower, More Eerie */
 @keyframes pulse-glow {
   0%, 100% {
     box-shadow: 0 0 20px var(--color-neon-violet), 0 0 40px var(--color-neon-violet);
+    opacity: 1;
   }
   50% {
-    box-shadow: 0 0 30px var(--color-neon-violet), 0 0 60px var(--color-neon-violet), 0 0 90px var(--color-neon-violet);
+    box-shadow: 0 0 40px var(--color-neon-violet), 0 0 80px var(--color-neon-violet), 0 0 120px var(--color-neon-violet);
+    opacity: 0.9;
   }
 }
 
 @utility pulse-glow {
-  animation: pulse-glow 3s ease-in-out infinite;
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+
+/* Creepy breathing animation */
+@keyframes breathe {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.02); opacity: 1; }
+}
+
+.breathe {
+  animation: breathe 6s ease-in-out infinite;
 }
 
 /* Shimmer Animation for Loading States */
@@ -185,20 +254,40 @@ body {
   animation: shimmer 2s infinite;
 }
 
-/* Fade In Animation */
+/* Fade In Animation - Slower, More Dramatic */
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(-20px);
+    filter: blur(4px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
+    filter: blur(0);
   }
 }
 
 .animate-fadeIn {
-  animation: fadeIn 0.3s ease-out;
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* Creepy text reveal */
+@keyframes revealText {
+  0% { 
+    opacity: 0; 
+    letter-spacing: 0.5em;
+    filter: blur(10px);
+  }
+  100% { 
+    opacity: 1; 
+    letter-spacing: 0.05em;
+    filter: blur(0);
+  }
+}
+
+.reveal-text {
+  animation: revealText 1.5s ease-out forwards;
 }
 
 /* Responsive Typography */
@@ -206,6 +295,7 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-gothic);
   font-weight: 700;
   line-height: 1.2;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 /* Selection Styling */
@@ -214,9 +304,9 @@ h1, h2, h3, h4, h5, h6 {
   color: white;
 }
 
-/* Scrollbar Styling */
+/* Scrollbar Styling - Darker */
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -224,8 +314,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--color-dark-border);
-  border-radius: 6px;
+  background: rgba(142, 72, 255, 0.3);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -236,4 +326,131 @@ h1, h2, h3, h4, h5, h6 {
 *:focus-visible {
   outline: 2px solid var(--color-neon-violet);
   outline-offset: 2px;
+}
+
+/* Creepy vignette effect */
+.vignette {
+  position: relative;
+}
+
+.vignette::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.6) 100%);
+  pointer-events: none;
+}
+
+
+/* Print Styles for PDF Export - Single Page */
+@media print {
+  @page {
+    size: landscape;
+    margin: 0.25in;
+  }
+  
+  html, body {
+    height: 100vh !important;
+    max-height: 100vh !important;
+    overflow: hidden !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background-color: #050505 !important;
+    color: white !important;
+  }
+  
+  body::before {
+    display: none !important;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+  
+  .min-h-screen {
+    min-height: 100vh !important;
+    max-height: 100vh !important;
+    height: 100vh !important;
+    overflow: hidden !important;
+  }
+  
+  .gothic-card {
+    break-inside: avoid;
+    background: #0d0d0d !important;
+    border-color: #8E48FF !important;
+  }
+  
+  .text-neon-violet {
+    color: #8E48FF !important;
+  }
+  
+  .bg-neon-violet {
+    background-color: #8E48FF !important;
+  }
+  
+  .border-neon-violet {
+    border-color: #8E48FF !important;
+  }
+  
+  .neon-border, .neon-border-thick {
+    border-color: #8E48FF !important;
+  }
+  
+  .text-glow-lg, .pulse-glow {
+    text-shadow: none !important;
+    animation: none !important;
+  }
+}
+
+/* Creepy cursor trail effect (optional enhancement) */
+.cursor-trail {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(142, 72, 255, 0.3) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 9999;
+  transition: transform 0.1s ease;
+}
+
+/* Spooky input styling */
+input, select, textarea {
+  background-color: rgba(5, 5, 5, 0.9) !important;
+  border-color: rgba(142, 72, 255, 0.3) !important;
+  transition: all 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--color-neon-violet) !important;
+  box-shadow: 0 0 20px rgba(142, 72, 255, 0.2), inset 0 0 10px rgba(142, 72, 255, 0.05) !important;
+}
+
+/* Button hover states - more dramatic */
+button {
+  position: relative;
+  overflow: hidden;
+}
+
+button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(45deg, transparent, rgba(142, 72, 255, 0.1), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+
+button:hover::before {
+  transform: translateX(100%);
+}
+
+/* Eerie link styling */
+a {
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  text-shadow: 0 0 10px var(--color-neon-violet);
 }
