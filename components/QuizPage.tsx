@@ -344,49 +344,49 @@ export default function QuizPage() {
         <div className="absolute inset-0 bg-[rgba(30,10,50,0.7)]" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-[rgba(50,20,80,0.3)] to-black/90" />
         
-        <div className="container mx-auto px-4 py-8 relative z-10">
+        <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 relative z-10">
           <div className="max-w-3xl mx-auto w-full">
             {/* Logo */}
-            <div className="flex flex-col items-center mb-6">
+            <div className="flex flex-col items-center mb-3 sm:mb-6">
               <img 
                 src="/logo.png" 
                 alt="Kiroween Kinship" 
-                className="w-16 h-16 md:w-20 md:h-20 object-contain mb-2 opacity-90"
+                className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 object-contain mb-1 sm:mb-2 opacity-90"
               />
-              <span className="text-sm md:text-base font-gothic text-neon-violet/80 tracking-[0.3em] uppercase">
+              <span className="text-xs sm:text-sm md:text-base font-gothic text-neon-violet/80 tracking-[0.2em] sm:tracking-[0.3em] uppercase">
                 Kiroween Kinship
               </span>
             </div>
 
             {/* Decorative header with gothic styling */}
-            <div className="text-center mb-10 relative">
+            <div className="text-center mb-4 sm:mb-10 relative">
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-neon-violet/20 rounded-full blur-3xl -z-10" />
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-gothic font-black mb-4 text-glow-lg text-center text-white">
+              <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-gothic font-black mb-2 sm:mb-4 text-glow-lg text-center text-white">
                 Discover Your Monster
               </h1>
-          <div className="flex items-center justify-center gap-4 mb-4">
-            <div className="h-px w-16 bg-gradient-to-r from-transparent to-neon-violet" />
-            <span className="text-neon-violet text-2xl">✦</span>
-            <div className="h-px w-16 bg-gradient-to-l from-transparent to-neon-violet" />
+          <div className="flex items-center justify-center gap-2 sm:gap-4 mb-2 sm:mb-4">
+            <div className="h-px w-8 sm:w-16 bg-gradient-to-r from-transparent to-neon-violet" />
+            <span className="text-neon-violet text-lg sm:text-2xl">✦</span>
+            <div className="h-px w-8 sm:w-16 bg-gradient-to-l from-transparent to-neon-violet" />
           </div>
           
           {/* Progress Indicator */}
-          <div className="flex items-center justify-center gap-2 mb-6">
+          <div className="flex items-center justify-center gap-1 sm:gap-2 mb-3 sm:mb-6">
             {Array.from({ length: totalSteps }).map((_, index) => (
               <div
                 key={index}
-                className={`h-2 rounded-full transition-all-smooth ${
+                className={`h-1.5 sm:h-2 rounded-full transition-all-smooth ${
                   index === currentStep
-                    ? 'w-12 bg-neon-violet neon-glow'
+                    ? 'w-8 sm:w-12 bg-neon-violet neon-glow'
                     : index < currentStep
-                    ? 'w-8 bg-neon-violet/60'
-                    : 'w-8 bg-gray-700'
+                    ? 'w-5 sm:w-8 bg-neon-violet/60'
+                    : 'w-5 sm:w-8 bg-gray-700'
                 }`}
               />
             ))}
           </div>
           
-          <p className="text-lg text-gray-400 font-light" data-testid="progress-text">
+          <p className="text-sm sm:text-lg text-gray-400 font-light" data-testid="progress-text">
             {isImageUploadStep 
               ? 'Optional: Upload Your Photo' 
               : `Question ${currentStep + 1} of 5`}
@@ -395,19 +395,19 @@ export default function QuizPage() {
 
         <form 
           onSubmit={handleSubmit} 
-          className="space-y-8"
+          className="space-y-4 sm:space-y-8"
         >
           {/* Current Question or Image Upload */}
           {!isImageUploadStep && currentQuestion && (
-            <div className={`gothic-card ${currentQuestion.isDoubleWeighted ? 'neon-border-thick' : 'neon-border'} hover-lift transition-glow group relative overflow-visible`}>
-              <label className="block text-2xl md:text-3xl font-gothic font-semibold mb-6 text-neon-violet group-hover:text-glow transition-all-smooth">
-                <span className="text-3xl mr-3">{currentQuestion.number}.</span> {currentQuestion.label}
+            <div className={`gothic-card-compact sm:gothic-card ${currentQuestion.isDoubleWeighted ? 'neon-border-thick' : 'neon-border'} hover-lift transition-glow group relative overflow-visible`}>
+              <label className="block text-lg sm:text-2xl md:text-3xl font-gothic font-semibold mb-3 sm:mb-6 text-neon-violet group-hover:text-glow transition-all-smooth">
+                <span className="text-xl sm:text-3xl mr-2 sm:mr-3">{currentQuestion.number}.</span> {currentQuestion.label}
               </label>
               
               <select
                 value={showOtherInput ? 'other' : formData[currentQuestion.id]}
                 onChange={(e) => handleSelectChange(e.target.value)}
-                className="w-full p-5 rounded-lg bg-dark-bg border border-dark-border text-white text-lg focus:border-neon-violet focus:neon-glow focus:outline-none transition-all-smooth hover:border-neon-violet/50 mb-4"
+                className="w-full p-3 sm:p-5 rounded-lg bg-dark-bg border border-dark-border text-white text-base sm:text-lg focus:border-neon-violet focus:neon-glow focus:outline-none transition-all-smooth hover:border-neon-violet/50 mb-2 sm:mb-4"
                 data-testid={`${currentQuestion.id}-input`}
               >
                 <option value="">Select an option...</option>
@@ -420,8 +420,8 @@ export default function QuizPage() {
               </select>
 
               {showOtherInput && (
-                <div className="mt-4 animate-fadeIn">
-                  <label className="block text-sm font-gothic font-semibold mb-2 text-gray-300">
+                <div className="mt-2 sm:mt-4 animate-fadeIn">
+                  <label className="block text-xs sm:text-sm font-gothic font-semibold mb-1 sm:mb-2 text-gray-300">
                     Please specify:
                   </label>
                   <input
@@ -429,7 +429,7 @@ export default function QuizPage() {
                     value={otherValue}
                     onChange={(e) => handleOtherInputChange(e.target.value)}
                     placeholder="Enter your custom answer..."
-                    className="w-full p-4 rounded-lg bg-dark-bg border border-dark-border text-white focus:border-neon-violet focus:neon-glow focus:outline-none transition-all-smooth"
+                    className="w-full p-3 sm:p-4 rounded-lg bg-dark-bg border border-dark-border text-white focus:border-neon-violet focus:neon-glow focus:outline-none transition-all-smooth"
                     data-testid="other-input"
                     autoFocus
                   />
@@ -440,15 +440,12 @@ export default function QuizPage() {
 
           {/* Image Upload Step */}
           {isImageUploadStep && (
-            <div className="gothic-card neon-border hover-lift transition-glow">
-              <label className="block text-2xl md:text-3xl font-gothic font-semibold mb-4 text-neon-violet">
-                <span className="text-3xl mr-3">✦</span> Upload Your Photo
+            <div className="gothic-card-compact sm:gothic-card neon-border hover-lift transition-glow">
+              <label className="block text-lg sm:text-2xl md:text-3xl font-gothic font-semibold mb-1 sm:mb-4 text-neon-violet">
+                <span className="text-lg sm:text-3xl mr-1 sm:mr-3">✦</span> Upload Your Photo
               </label>
-              <p className="text-lg text-gray-300 mb-2 font-light">
-                <span className="text-neon-violet font-semibold">Optional:</span> Upload a photo to see yourself transformed into your monster persona
-              </p>
-              <p className="text-sm text-gray-500 mb-6 font-light">
-                You can skip this step if you just want to discover your monster personality
+              <p className="text-xs sm:text-base text-gray-400 mb-2 sm:mb-6 font-light">
+                <span className="text-neon-violet font-medium">Optional</span> — see yourself as your monster
               </p>
               <ImageUpload 
                 onImageSelect={setUploadedImage}
@@ -471,17 +468,17 @@ export default function QuizPage() {
           )}
 
           {/* Navigation Buttons */}
-          <div className="flex justify-between items-center pt-8 gap-4">
+          <div className="flex flex-col-reverse sm:flex-row justify-between items-stretch sm:items-center pt-6 sm:pt-8 gap-3 sm:gap-4">
             {/* Back Button */}
             {currentStep > 0 && (
               <button
                 type="button"
                 onClick={handleBack}
-                className="px-8 py-4 font-gothic font-bold rounded-lg text-lg border-2 border-gray-600 text-gray-300 hover:border-neon-violet hover:text-neon-violet transition-all-smooth transform hover:scale-105"
+                className="w-full sm:w-auto px-4 sm:px-8 py-3 sm:py-4 font-gothic font-bold rounded-lg text-sm sm:text-lg border-2 border-gray-600 text-gray-300 hover:border-neon-violet hover:text-neon-violet transition-all-smooth transform hover:scale-105"
                 data-testid="back-button"
               >
-                <span className="flex items-center gap-2">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <span className="flex items-center justify-center gap-1 sm:gap-2">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
                   Back
@@ -490,7 +487,7 @@ export default function QuizPage() {
             )}
 
             {/* Spacer for alignment when no back button */}
-            {currentStep === 0 && <div />}
+            {currentStep === 0 && <div className="hidden sm:block" />}
 
             {/* Next or Submit Button */}
             {!isImageUploadStep ? (
@@ -499,7 +496,7 @@ export default function QuizPage() {
                 onClick={handleNext}
                 disabled={!isCurrentStepComplete()}
                 className={`
-                  px-12 py-4 font-gothic font-bold rounded-lg text-lg transition-all-smooth relative overflow-hidden
+                  w-full sm:w-auto px-6 sm:px-12 py-3 sm:py-4 font-gothic font-bold rounded-lg text-base sm:text-lg transition-all-smooth relative overflow-hidden
                   ${isCurrentStepComplete()
                     ? 'bg-neon-violet hover:neon-glow-lg text-white transform hover:scale-105 cursor-pointer shadow-lg'
                     : 'bg-gray-700 text-gray-400 cursor-not-allowed opacity-50'
@@ -507,9 +504,9 @@ export default function QuizPage() {
                 `}
                 data-testid="next-button"
               >
-                <span className="flex items-center gap-2">
+                <span className="flex items-center justify-center gap-2">
                   Next
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
                 </span>
@@ -519,7 +516,7 @@ export default function QuizPage() {
                 type="submit"
                 disabled={isLoading}
                 className={`
-                  px-12 py-4 font-gothic font-bold rounded-lg text-lg transition-all-smooth relative overflow-hidden
+                  w-full sm:w-auto px-6 sm:px-12 py-3 sm:py-4 font-gothic font-bold rounded-lg text-base sm:text-lg transition-all-smooth relative overflow-hidden
                   ${!isLoading
                     ? 'bg-neon-violet hover:neon-glow-lg text-white transform hover:scale-105 cursor-pointer shadow-lg'
                     : 'bg-gray-700 text-gray-400 cursor-not-allowed opacity-50'
@@ -530,19 +527,19 @@ export default function QuizPage() {
                 {isLoading && (
                   <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
                 )}
-                <span className="relative flex items-center gap-3 justify-center">
+                <span className="relative flex items-center gap-2 sm:gap-3 justify-center">
                   {isLoading ? (
                     <>
-                      <svg className="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
+                      <svg className="animate-spin h-4 w-4 sm:h-5 sm:w-5" fill="none" viewBox="0 0 24 24">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                       </svg>
-                      Discovering...
+                      <span className="text-sm sm:text-base">Discovering...</span>
                     </>
                   ) : (
                     <>
-                      Reveal My Monster
-                      <span className="text-2xl">✦</span>
+                      <span className="text-sm sm:text-base">Reveal My Monster</span>
+                      <span className="text-lg sm:text-2xl">✦</span>
                     </>
                   )}
                 </span>
