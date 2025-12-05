@@ -43,7 +43,7 @@ export default function RootLayout({
           <footer className="relative z-10 py-8 text-center border-t border-dark-border backdrop-blur-sm">
             <div className="container mx-auto px-4">
               <p className="text-sm text-gray-500 hover:text-neon-violet transition-all-smooth font-gothic">
-                Kiroween Kinship © 2024
+                Kiroween Kinship © 2025
               </p>
               <div className="mt-2 flex justify-center gap-2">
                 <span className="inline-block w-2 h-2 rounded-full bg-neon-violet pulse-glow" />

@@ -92,6 +92,17 @@ export default function ResultsPage({ assignment, userImage, transformedImage, a
 
   const hasImage = userImage || transformedImage;
 
+  // Download the transformed image
+  const handleDownloadTransformation = () => {
+    if (!transformedImage) return;
+    const a = document.createElement('a');
+    a.href = transformedImage;
+    a.download = `${assignment.assigned_persona.toLowerCase().replace(/\s+/g, '-')}-transformation.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
   return (
     <>
       {/* Full viewport single-fold results page */}
@@ -119,7 +130,7 @@ export default function ResultsPage({ assignment, userImage, transformedImage, a
           <div className={`flex-1 grid ${hasImage ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1 max-w-2xl mx-auto'} gap-4 md:gap-6 mb-4 print:mb-2 min-h-0`}>
             {/* Image Section - Clean, no wrapper glow */}
             {hasImage && (
-              <div className="flex items-center justify-center">
+              <div className="flex flex-col items-center justify-center gap-3">
                 <div className="w-full max-w-xs md:max-w-sm aspect-square relative overflow-hidden rounded-lg border-2 border-neon-violet">
                   {transformedImage ? (
                     <img src={transformedImage} alt="Your monster transformation" className="w-full h-full object-cover" data-testid="transformed-image" />
@@ -127,6 +138,20 @@ export default function ResultsPage({ assignment, userImage, transformedImage, a
                     <img src={userImage} alt="Your uploaded photo" className="w-full h-full object-cover" data-testid="user-image" />
                   ) : null}
                 </div>
+                {/* Download button - only show if transformed image exists */}
+                {transformedImage && (
+                  <button
+                    onClick={handleDownloadTransformation}
+                    className="px-4 py-2 text-sm font-gothic font-bold rounded-lg border border-neon-violet text-neon-violet hover:bg-neon-violet hover:text-white transition-all-smooth no-print"
+                  >
+                    <span className="flex items-center gap-2">
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                      </svg>
+                      Download Transformation
+                    </span>
+                  </button>
+                )}
               </div>
             )}
 

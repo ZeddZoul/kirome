@@ -251,9 +251,86 @@ export default function QuizPage() {
     }
   };
 
+  // Haunting loading messages
+  const loadingMessages = [
+    "Summoning ancient spirits...",
+    "Reading your dark aura...",
+    "Consulting the shadows...",
+    "The void whispers your name...",
+    "Awakening dormant creatures...",
+    "Decoding your inner monster...",
+  ];
+  const [loadingMessageIndex, setLoadingMessageIndex] = useState(0);
+
+  // Cycle through loading messages
+  React.useEffect(() => {
+    if (isLoading) {
+      const interval = setInterval(() => {
+        setLoadingMessageIndex(prev => (prev + 1) % loadingMessages.length);
+      }, 2000);
+      return () => clearInterval(interval);
+    }
+  }, [isLoading, loadingMessages.length]);
+
   return (
-    <div className="container mx-auto px-4 py-16 min-h-screen flex items-center">
-      <div className="max-w-3xl mx-auto w-full">
+    <>
+      {/* Haunting Loading Overlay */}
+      {isLoading && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm">
+          {/* Animated fog/mist background */}
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-neon-violet/10 via-transparent to-neon-violet/5 animate-pulse" />
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-neon-violet/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '0.5s' }} />
+            <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-purple-900/30 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+          </div>
+          
+          {/* Central content */}
+          <div className="relative z-10 text-center px-8">
+            {/* Glowing eye animation */}
+            <div className="relative mb-8">
+              <div className="w-32 h-32 mx-auto relative">
+                {/* Outer ring */}
+                <div className="absolute inset-0 border-4 border-neon-violet rounded-full animate-spin" style={{ animationDuration: '3s' }} />
+                {/* Inner pulsing eye */}
+                <div className="absolute inset-4 bg-gradient-to-br from-neon-violet to-purple-900 rounded-full animate-pulse flex items-center justify-center">
+                  <div className="w-8 h-8 bg-black rounded-full animate-ping" style={{ animationDuration: '1.5s' }} />
+                </div>
+                {/* Glow effect */}
+                <div className="absolute inset-0 bg-neon-violet/30 rounded-full blur-xl animate-pulse" />
+              </div>
+            </div>
+            
+            {/* Haunting text */}
+            <h2 className="text-3xl md:text-4xl font-gothic font-black text-neon-violet text-glow-lg mb-4 animate-pulse">
+              The Ritual Begins...
+            </h2>
+            
+            {/* Cycling messages */}
+            <p className="text-xl text-gray-300 font-gothic mb-6 h-8 transition-opacity duration-500">
+              {loadingMessages[loadingMessageIndex]}
+            </p>
+            
+            {/* Creepy progress dots */}
+            <div className="flex justify-center gap-3">
+              {[0, 1, 2, 3, 4].map((i) => (
+                <div
+                  key={i}
+                  className="w-3 h-3 bg-neon-violet rounded-full animate-bounce"
+                  style={{ animationDelay: `${i * 0.15}s`, animationDuration: '1s' }}
+                />
+              ))}
+            </div>
+            
+            {/* Warning text */}
+            <p className="text-sm text-gray-500 mt-8 font-light italic">
+              Do not look away... the transformation is near
+            </p>
+          </div>
+        </div>
+      )}
+
+      <div className="container mx-auto px-4 py-16 min-h-screen flex items-center">
+        <div className="max-w-3xl mx-auto w-full">
         {/* Decorative header with gothic styling */}
         <div className="text-center mb-12 relative">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-neon-violet/20 rounded-full blur-3xl -z-10" />
@@ -448,5 +525,6 @@ export default function QuizPage() {
         </form>
       </div>
     </div>
+    </>
   );
 }

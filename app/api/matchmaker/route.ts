@@ -101,7 +101,7 @@ export async function POST(request: NextRequest) {
     const ai = new GoogleGenAI({ apiKey });
 
     // STEP 1: Use gemini-2.5-flash for persona assignment (text only)
-    const personaPrompt = `You are the KIROWEEN KINSHIP ENGINE, a monster personality matchmaker. Based on the user's personality attributes, assign them to ONE of these 15 monster personas:
+    const personaPrompt = `You are Kiroween Kinship v7.2, a monster personality matchmaker. Based on the user's personality attributes, assign them to ONE of these 15 monster personas:
 
 1. Vampire: aristocratic, immortal, nocturnal, sophisticated, ancient
 2. Werewolf: primal rage, chaotic, transformative, passionate, wild
@@ -119,7 +119,7 @@ export async function POST(request: NextRequest) {
 14. Alien Parasite: infiltrating, subtle, control, hidden, symbiotic
 15. Gorgon: stone gaze, transformative, deadly, beautiful, serpentine
 
-You can add more if the user's personality traits do not FULLY match any of the ones here and YOU ASCERTAIN there is a BETTER fit
+You SHOULD pick the persona outside this list if the user's personality traits do not FULLY match any of the ones here or YOU ASCERTAIN there is a BETTER fit for the User's PERSONALITY ATTRIBUTES.
 
 User's Personality Attributes:
 - Time of Day: ${body.timeOfDay}
@@ -136,7 +136,7 @@ Return ONLY a JSON object in this exact format (do NOT use markdown code fences 
     "core_trait_summary": "[exactly 5 traits from the list above (or what you inferred), comma-separated]"
   },
   "image_generation_prompt": "Transform this person into a [Monster Name] with NEON-GOTHIC HORROR style, electric violet (#8E48FF) lighting, foggy city street background, photorealistic, 8k, cinematic",
-  "share_message": "[A fun, shareable social media message (2-3 sentences, include emojis) announcing their monster persona. Make it engaging and encourage others to try the quiz. Max 200 characters.]"
+  "share_message": "[A fun social media message (2-3 sentences with emojis) announcing their monster persona and encouraging others to try the quiz. Max 200 characters.]"
 }`;
 
     const response = await ai.models.generateContent({
@@ -179,7 +179,17 @@ Return ONLY a JSON object in this exact format (do NOT use markdown code fences 
           // Build prompt with text and image (text-and-image-to-image)
           const imagePrompt = [
             { 
-              text: `Transform this person into a ${outputData.assignment_result.assigned_persona}. ${outputData.image_generation_prompt}. Keep the person's face recognizable but add monster features, dramatic lighting, and horror atmosphere.` 
+              text: `Transform this person into a ${outputData.assignment_result.assigned_persona}. 
+
+CRITICAL REQUIREMENTS:
+- PRESERVE the person's exact facial features, face shape, skin tone, and body proportions - the result must clearly RESEMBLE the original person
+- Keep their eyes, nose, mouth, and facial structure identical
+- Maintain their body type and posture
+- You MAY freely change: clothing, accessories, limbs/hands appearance, hair style/color, background, and add monster-specific features
+
+STYLE: Hyper-realistic, photorealistic quality, 8K resolution, cinematic lighting with electric violet (#8E48FF) neon accents, foggy atmospheric background, dramatic shadows
+
+MONSTER TRANSFORMATION: Add ${outputData.assignment_result.assigned_persona}-specific features (fangs, claws, glowing eyes, supernatural elements) while keeping the person's identity clearly recognizable. The viewer should immediately see this is the SAME PERSON transformed into a monster.` 
             },
             {
               inlineData: {
@@ -205,6 +215,7 @@ Return ONLY a JSON object in this exact format (do NOT use markdown code fences 
             const imagePart = parts.find((part) => part.inlineData);
             if (imagePart?.inlineData) {
               const generatedImageData = imagePart.inlineData.data;
+              // Default to 'image/png' if mimeType is somehow missing
               const imageMimeType = imagePart.inlineData.mimeType || 'image/png';
               outputData.transformed_image = `data:${imageMimeType};base64,${generatedImageData}`;
             }
