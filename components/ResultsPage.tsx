@@ -26,58 +26,48 @@ export default function ResultsPage({ assignment, userImage, transformedImage, a
     setShowShareModal(true);
   };
 
-  const handleShareAsPDF = async () => {
+  // Share to WhatsApp with image and caption
+  const handleShareToWhatsApp = async () => {
     setIsProcessing(true);
     try {
-      window.print();
-    } finally {
-      setIsProcessing(false);
-      setShowShareModal(false);
-    }
-  };
-
-  const captureAsImage = async (): Promise<Blob | null> => {
-    if (!resultsRef.current) return null;
-    try {
-      const html2canvas = (await import('html2canvas')).default;
-      const originalWarn = console.warn;
-      console.warn = (...args: unknown[]) => {
-        if (typeof args[0] === 'string' && args[0].includes('unsupported color function')) return;
-        originalWarn.apply(console, args);
-      };
-      const canvas = await html2canvas(resultsRef.current, {
-        backgroundColor: '#0a0a0f',
-        scale: 2,
-        useCORS: true,
-        allowTaint: true,
-        logging: false,
-      });
-      console.warn = originalWarn;
-      return new Promise((resolve) => canvas.toBlob((blob) => resolve(blob), 'image/png', 1.0));
-    } catch {
-      return null;
-    }
-  };
-
-  const handleShareAsImage = async () => {
-    setIsProcessing(true);
-    try {
-      const imageBlob = await captureAsImage();
-      if (imageBlob && navigator.canShare?.({ files: [new File([imageBlob], 'monster-result.png', { type: 'image/png' })] })) {
-        await navigator.share({ title: 'My Monster Persona', text: shareMessage, files: [new File([imageBlob], 'monster-result.png', { type: 'image/png' })] });
-      } else if (imageBlob) {
-        const url = URL.createObjectURL(imageBlob);
+      // If we have a transformed image, try to share it via Web Share API first
+      if (transformedImage) {
+        // Convert base64 to blob
+        const response = await fetch(transformedImage);
+        const blob = await response.blob();
+        const file = new File([blob], 'monster-transformation.png', { type: 'image/png' });
+        
+        // Check if we can share files (mobile devices)
+        if (navigator.canShare?.({ files: [file] })) {
+          await navigator.share({
+            text: shareMessage,
+            files: [file],
+          });
+          setShowShareModal(false);
+          return;
+        }
+      }
+      
+      // Fallback: Open WhatsApp with just the text message
+      const encodedMessage = encodeURIComponent(shareMessage);
+      const whatsappUrl = `https://wa.me/?text=${encodedMessage}`;
+      window.open(whatsappUrl, '_blank');
+      
+      // If there's a transformed image, also download it so user can attach manually
+      if (transformedImage) {
         const a = document.createElement('a');
-        a.href = url;
-        a.download = `monster-${assignment.assigned_persona.toLowerCase().replace(/\s+/g, '-')}.png`;
+        a.href = transformedImage;
+        a.download = `${assignment.assigned_persona.toLowerCase().replace(/\s+/g, '-')}-transformation.png`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-        await navigator.clipboard.writeText(shareMessage);
-        alert('Image downloaded! Message copied to clipboard.');
+        alert('Image downloaded! Attach it to your WhatsApp message.');
       }
-    } catch { /* ignore */ } finally {
+    } catch (error) {
+      // Fallback to just opening WhatsApp with text
+      const encodedMessage = encodeURIComponent(shareMessage);
+      window.open(`https://wa.me/?text=${encodedMessage}`, '_blank');
+    } finally {
       setIsProcessing(false);
       setShowShareModal(false);
     }
@@ -235,43 +225,30 @@ export default function ResultsPage({ assignment, userImage, transformedImage, a
               </button>
             </div>
 
-            <div className="space-y-2">
-              <button
-                onClick={handleShareAsPDF}
-                disabled={isProcessing}
-                className="w-full px-4 py-3 font-gothic font-bold rounded-lg bg-neon-violet text-white flex items-center justify-center gap-2 disabled:opacity-50"
-              >
-                {isProcessing ? (
-                  <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                  </svg>
-                ) : (
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                  </svg>
-                )}
-                Save as PDF
-              </button>
-
-              <button
-                onClick={handleShareAsImage}
-                disabled={isProcessing}
-                className="w-full px-4 py-3 font-gothic font-bold rounded-lg border-2 border-neon-violet text-neon-violet hover:bg-neon-violet hover:text-white flex items-center justify-center gap-2 disabled:opacity-50"
-              >
-                {isProcessing ? (
-                  <svg className="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                  </svg>
-                ) : (
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                )}
-                Share as Image
-              </button>
-            </div>
+            {/* WhatsApp Share Button */}
+            <button
+              onClick={handleShareToWhatsApp}
+              disabled={isProcessing}
+              className="w-full px-4 py-4 font-gothic font-bold rounded-lg bg-[#25D366] hover:bg-[#128C7E] text-white flex items-center justify-center gap-3 disabled:opacity-50 transition-all-smooth"
+            >
+              {isProcessing ? (
+                <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                </svg>
+              ) : (
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                </svg>
+              )}
+              Share to WhatsApp
+            </button>
+            
+            <p className="text-xs text-gray-500 mt-3 text-center">
+              {transformedImage 
+                ? 'Your transformation image will be shared along with the message'
+                : 'Share your monster persona with friends!'}
+            </p>
           </div>
         </div>
       )}
