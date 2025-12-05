@@ -187,6 +187,13 @@ CRITICAL REQUIREMENTS:
 - Maintain their body type and posture
 - You MAY freely change: clothing, accessories, limbs/hands appearance, hair style/color, background, and add monster-specific features
 
+OTHER CRITICAL ENHANCEMENTS: 
+- DETECT AND REMOVE ALL UI ELEMENTS AND ARTIFACTS
+- DETECT AND REMOVE any play buttons, video controls, or media player UI overlays
+- DETECT AND REMOVE any watermarks, logos, timestamps, or text overlays
+- DETECT AND REMOVE any screenshot artifacts, borders, or interface elements
+- The final image should be a CLEAN portrait with NO UI elements whatsoever
+
 STYLE: Hyper-realistic, photorealistic quality, 8K resolution, cinematic lighting with electric violet (#8E48FF) neon accents, foggy atmospheric background, dramatic shadows
 
 MONSTER TRANSFORMATION: Add ${outputData.assignment_result.assigned_persona}-specific features (fangs, claws, glowing eyes, supernatural elements) while keeping the person's identity clearly recognizable. The viewer should immediately see this is the SAME PERSON transformed into a monster.` 
@@ -208,17 +215,30 @@ MONSTER TRANSFORMATION: Add ${outputData.assignment_result.assigned_persona}-spe
             },
           });
           console.log('Image transformation response received');
+          console.log('Image response candidates:', JSON.stringify(imageResponse.candidates?.length));
+          console.log('Image response parts:', JSON.stringify(imageResponse.candidates?.[0]?.content?.parts?.map(p => ({ hasInlineData: !!p.inlineData, hasText: !!p.text }))));
 
           // Look for the generated image part
           const parts = imageResponse.candidates?.[0]?.content?.parts;
           if (parts) {
+            console.log('Found parts:', parts.length);
             const imagePart = parts.find((part) => part.inlineData);
             if (imagePart?.inlineData) {
+              console.log('Found image data, mimeType:', imagePart.inlineData.mimeType);
               const generatedImageData = imagePart.inlineData.data;
               // Default to 'image/png' if mimeType is somehow missing
               const imageMimeType = imagePart.inlineData.mimeType || 'image/png';
               outputData.transformed_image = `data:${imageMimeType};base64,${generatedImageData}`;
+              console.log('Image added to output, length:', outputData.transformed_image?.length);
+            } else {
+              console.log('No inlineData found in parts');
+              // Log what we got instead
+              parts.forEach((p, i) => {
+                if (p.text) console.log(`Part ${i} text:`, p.text.substring(0, 200));
+              });
             }
+          } else {
+            console.log('No parts found in response');
           }
           
         }
