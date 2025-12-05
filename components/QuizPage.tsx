@@ -329,14 +329,41 @@ export default function QuizPage() {
         </div>
       )}
 
-      <div className="container mx-auto px-4 py-16 min-h-screen flex items-center">
-        <div className="max-w-3xl mx-auto w-full">
-        {/* Decorative header with gothic styling */}
-        <div className="text-center mb-12 relative">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-neon-violet/20 rounded-full blur-3xl -z-10" />
-          <h1 className="text-5xl md:text-6xl font-gothic font-black mb-4 text-glow-lg text-center">
-            Discover Your Monster
-          </h1>
+      {/* Quiz container with background image */}
+      <div 
+        className="relative min-h-screen flex items-center"
+        style={{
+          backgroundImage: 'url(/bg.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+        }}
+      >
+        {/* Dark overlay with deep purple tint */}
+        <div className="absolute inset-0 bg-black/85 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 bg-[rgba(30,10,50,0.7)]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-[rgba(50,20,80,0.3)] to-black/90" />
+        
+        <div className="container mx-auto px-4 py-8 relative z-10">
+          <div className="max-w-3xl mx-auto w-full">
+            {/* Logo */}
+            <div className="flex flex-col items-center mb-6">
+              <img 
+                src="/logo.png" 
+                alt="Kiroween Kinship" 
+                className="w-16 h-16 md:w-20 md:h-20 object-contain mb-2 opacity-90"
+              />
+              <span className="text-sm md:text-base font-gothic text-neon-violet/80 tracking-[0.3em] uppercase">
+                Kiroween Kinship
+              </span>
+            </div>
+
+            {/* Decorative header with gothic styling */}
+            <div className="text-center mb-10 relative">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-neon-violet/20 rounded-full blur-3xl -z-10" />
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-gothic font-black mb-4 text-glow-lg text-center text-white">
+                Discover Your Monster
+              </h1>
           <div className="flex items-center justify-center gap-4 mb-4">
             <div className="h-px w-16 bg-gradient-to-r from-transparent to-neon-violet" />
             <span className="text-neon-violet text-2xl">✦</span>
@@ -523,8 +550,9 @@ export default function QuizPage() {
             )}
           </div>
         </form>
+          </div>
+        </div>
       </div>
-    </div>
     </>
   );
 }
